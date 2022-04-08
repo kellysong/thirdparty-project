@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item type="id" name="tv_title"/>
+    <item type="id" name="tv_content"/>
+    <item type="id" name="tv_dismiss"/>
+    <item type="id" name="tv_skip"/>
+</resources>
