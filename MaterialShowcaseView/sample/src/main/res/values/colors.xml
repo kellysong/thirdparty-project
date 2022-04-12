@@ -12,5 +12,6 @@
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
     <item name="tooltip_mask" type="color">#CC4f5355</item>
+    <color name="color_mask">#7f000000</color>
 
 </resources>

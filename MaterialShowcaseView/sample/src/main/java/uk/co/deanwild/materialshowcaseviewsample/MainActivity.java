@@ -3,12 +3,13 @@ package uk.co.deanwild.materialshowcaseviewsample;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         button.setOnClickListener(this);
         button = findViewById(R.id.btn_reset_all);
         button.setOnClickListener(this);
-
+        button = findViewById(R.id.btn_sequence_example2);
+        button.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_tooltip_example:
                 intent = new Intent(this, TooltipExample.class);
+                break;
+            case R.id.btn_sequence_example2:
+                intent = new Intent(this, SequenceExample2.class);
                 break;
 
             case R.id.btn_reset_all:
