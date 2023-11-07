@@ -21,7 +21,7 @@ public class NoShape implements Shape {
     }
 
     @Override
-    public void setPadding(int left, int top, int right, int bottom) {
+    public void setPadding(int padding) {
         // do nothing
     }
 

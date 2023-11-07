@@ -34,5 +34,5 @@ public interface Shape {
 
     int getTotalRadius();
 
-    void setPadding(int left, int top, int right, int bottom);
+    void setPadding(int padding);
 }

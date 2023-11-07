@@ -3,6 +3,7 @@ package uk.co.deanwild.materialshowcaseview;
 import android.graphics.Color;
 import android.graphics.Typeface;
 
+import uk.co.deanwild.materialshowcaseview.shape.CircleShape;
 import uk.co.deanwild.materialshowcaseview.shape.Shape;
 
 
@@ -18,7 +19,7 @@ public class ShowcaseConfig {
     private int mDismissTextColor;
     private long mFadeDuration = -1;
     private Shape mShape = null;
-    private int mLeftPadding = -1, mTopPadding = -1, mRightPadding = -1, mBottomPadding = -1;
+    private int mShapePadding = -1;
     private Boolean renderOverNav;
 
     public ShowcaseConfig() {
@@ -83,32 +84,12 @@ public class ShowcaseConfig {
         this.mShape = shape;
     }
 
-    public void setShapePadding(int left, int top, int right, int bottom) {
-        this.mLeftPadding = left;
-        this.mTopPadding = top;
-        this.mRightPadding = right;
-        this.mBottomPadding = bottom;
+    public void setShapePadding(int padding) {
+        this.mShapePadding = padding;
     }
 
-
-    public static String getDefaultMaskColour() {
-        return DEFAULT_MASK_COLOUR;
-    }
-
-    public int getLeftPadding() {
-        return mLeftPadding;
-    }
-
-    public int getTopPadding() {
-        return mTopPadding;
-    }
-
-    public int getRightPadding() {
-        return mRightPadding;
-    }
-
-    public int getBottomPadding() {
-        return mBottomPadding;
+    public int getShapePadding() {
+        return mShapePadding;
     }
 
     public Boolean getRenderOverNavigationBar() {

@@ -3,7 +3,6 @@ package uk.co.deanwild.materialshowcaseview;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -59,7 +58,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     private int mYPosition;
     private boolean mWasDismissed = false, mWasSkipped = false;
     private int mShapePadding = DEFAULT_SHAPE_PADDING;
-    private int mLeftPadding = DEFAULT_SHAPE_PADDING,  mTopPadding= DEFAULT_SHAPE_PADDING,  mRightPadding= DEFAULT_SHAPE_PADDING,  mBottomPadding= DEFAULT_SHAPE_PADDING;
     private int tooltipMargin = DEFAULT_TOOLTIP_MARGIN;
 
     private View mContentBox;
@@ -97,35 +95,27 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
     public MaterialShowcaseView(Context context) {
         super(context);
-        init(context,null);
+        init(context);
     }
 
     public MaterialShowcaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context, attrs);
+        init(context);
     }
 
     public MaterialShowcaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public MaterialShowcaseView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
+        init(context);
     }
 
 
-    private void init(Context context, AttributeSet attrs) {
-        int itemLayoutId = R.layout.showcase_content;
-        if (attrs != null){
-            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.MaterialShowcaseView);
-            itemLayoutId = array.getResourceId(R.styleable.MaterialShowcaseView_itemLayoutId, itemLayoutId);
-            array.recycle();
-        }
-
-
+    private void init(Context context) {
         setWillNotDraw(false);
 
         mListeners = new ArrayList<>();
@@ -139,16 +129,22 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         mMaskColour = Color.parseColor(ShowcaseConfig.DEFAULT_MASK_COLOUR);
         setVisibility(INVISIBLE);
+        setLayoutId(R.layout.showcase_content);
+/*
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.showcase_content, this, true);
+        mContentBox = contentView.findViewById(R.id.content_box);
+        mTitleTextView = contentView.findViewById(R.id.tv_title);
+        mContentTextView = contentView.findViewById(R.id.tv_content);
+        mDismissButton = contentView.findViewById(R.id.tv_dismiss);
+        mDismissButton.setOnClickListener(this);
 
-
-        setLayoutId(itemLayoutId);
+        mSkipButton = contentView.findViewById(R.id.tv_skip);
+        mSkipButton.setOnClickListener(this);*/
     }
-    View contentView;
+
     private void setLayoutId(int layoutId) {
-        if (contentView != null){
-            removeView(contentView);
-        }
-        contentView = LayoutInflater.from(getContext()).inflate(layoutId, this, false);
+        removeAllViews();
+        View contentView = LayoutInflater.from(getContext()).inflate(layoutId, this, false);
         mContentBox = contentView.findViewById(R.id.content_box);
         mTitleTextView = contentView.findViewById(R.id.tv_title);
         mContentTextView = contentView.findViewById(R.id.tv_content);
@@ -352,7 +348,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             }
 
             // If there's no custom gravity in place, we'll do automatic gravity calculation.
-            /*if (!mHasCustomGravity) {
+            if (!mHasCustomGravity) {
                 if (yPos > midPoint) {
                     // target is in lower half of screen, we'll sit above it
                     mContentTopMargin = 0;
@@ -364,7 +360,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
                     mContentBottomMargin = 0;
                     mGravity = Gravity.TOP;
                 }
-            }*/
+            }
         }
 
         applyLayoutParams();
@@ -508,11 +504,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         }
     }
 
-    private void setShapePadding(int left, int top, int right, int bottom) {
-        mLeftPadding = left;
-        mTopPadding = top;
-        mRightPadding = right;
-        mBottomPadding = bottom;
+    private void setShapePadding(int padding) {
+        mShapePadding = padding;
     }
 
     private void setTooltipMargin(int margin) {
@@ -582,40 +575,33 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
      */
     public void setConfig(ShowcaseConfig config) {
 
-        if(config.getDelay() > -1){
+        if (config.getDelay() > -1) {
             setDelay(config.getDelay());
         }
 
-        if(config.getFadeDuration() > 0){
+        if (config.getFadeDuration() > 0) {
             setFadeDuration(config.getFadeDuration());
         }
 
+        setContentTextColor(config.getContentTextColor());
 
-        if(config.getContentTextColor() > 0){
-            setContentTextColor(config.getContentTextColor());
-        }
+        setDismissTextColor(config.getDismissTextColor());
 
-        if(config.getDismissTextColor() > 0){
-            setDismissTextColor(config.getDismissTextColor());
-        }
+        setMaskColour(config.getMaskColor());
 
-        if(config.getDismissTextStyle() != null){
+        if (config.getDismissTextStyle() != null) {
             setDismissStyle(config.getDismissTextStyle());
         }
 
-        if(config.getMaskColor() > 0){
-            setMaskColour(config.getMaskColor());
-        }
-
-        if(config.getShape() != null){
+        if (config.getShape() != null) {
             setShape(config.getShape());
         }
 
-        if(config.getLeftPadding() > -1 && config.getTopPadding() > -1 && config.getRightPadding() > -1 && config.getBottomPadding() > -1){
-            setShapePadding(config.getLeftPadding(),config.getTopPadding(),config.getRightPadding(),config.getBottomPadding());
+        if (config.getShapePadding() > -1) {
+            setShapePadding(config.getShapePadding());
         }
 
-        if(config.getRenderOverNavigationBar() != null){
+        if (config.getRenderOverNavigationBar() != null) {
             setRenderOverNavigationBar(config.getRenderOverNavigationBar());
         }
     }
@@ -703,10 +689,10 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         }
 
         public Builder setLayoutId(int layoutId) {
+            showcaseView.setGravity(Gravity.CENTER);
             showcaseView.setLayoutId(layoutId);
             return this;
         }
-
         /**
          * Set the dismiss button properties
          */
@@ -869,9 +855,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             return this;
         }
 
-
-        public Builder setShapePadding(int left, int top, int right, int bottom) {
-            showcaseView.setShapePadding(left,top,right,bottom);
+        public Builder setShapePadding(int padding) {
+            showcaseView.setShapePadding(padding);
             return this;
         }
 
@@ -933,7 +918,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
                 }
             }
 
-            showcaseView.mShape.setPadding(showcaseView.mLeftPadding,showcaseView.mTopPadding,showcaseView.mRightPadding,showcaseView.mBottomPadding);
+            showcaseView.mShape.setPadding(showcaseView.mShapePadding);
 
             return showcaseView;
         }
@@ -943,7 +928,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             return showcaseView;
         }
     }
-
 
     private void singleUse(String showcaseID) {
         mSingleUse = true;

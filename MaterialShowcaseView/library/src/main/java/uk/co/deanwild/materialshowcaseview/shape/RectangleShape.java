@@ -4,7 +4,6 @@ package uk.co.deanwild.materialshowcaseview.shape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.os.Build;
 
 import uk.co.deanwild.materialshowcaseview.target.Target;
 
@@ -17,7 +16,8 @@ public class RectangleShape implements Shape {
     private boolean adjustToTarget = true;
 
     private Rect rect;
-    private int left, top, right, bottom;
+    private int padding;
+
     public RectangleShape(int width, int height) {
         this.width = width;
         this.height = height;
@@ -52,30 +52,13 @@ public class RectangleShape implements Shape {
     @Override
     public void draw(Canvas canvas, Paint paint, int x, int y) {
         if (!rect.isEmpty()) {
-          /*  canvas.drawRect(
+            canvas.drawRect(
                     rect.left + x - padding,
                     rect.top + y - padding,
                     rect.right + x + padding,
                     rect.bottom + y + padding,
                     paint
-            );*/
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                canvas.drawRoundRect(
-                        rect.left + x - left,
-                        rect.top + y - top,
-                        rect.right + x + right,
-                        rect.bottom + y + bottom,20f,20f,
-                        paint
-                );
-            }else {
-                canvas.drawRect(
-                        rect.left + x - left,
-                        rect.top + y - top,
-                        rect.right + x + right,
-                        rect.bottom + y + bottom,
-                        paint
-                );
-            }
+            );
         }
     }
 
@@ -93,17 +76,13 @@ public class RectangleShape implements Shape {
 
     @Override
     public int getTotalRadius() {
-        return (height / 2) + left;
+        return (height / 2) + padding;
     }
 
     @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        this.left = left;
-        this.top = top;
-        this.right = right;
-        this.bottom = bottom;
+    public void setPadding(int padding) {
+        this.padding = padding;
     }
-
 
     @Override
     public int getWidth() {

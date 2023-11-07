@@ -65,8 +65,8 @@ public class CircleShape implements Shape {
     }
 
     @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        this.padding = left;
+    public void setPadding(int padding) {
+        this.padding = padding;
     }
 
     @Override
